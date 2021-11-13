@@ -1,21 +1,55 @@
-import re
+from asyncio import gather, sleep
 
-import emoji
-
-url = "https://acobot-brainshop-ai-v1.p.rapidapi.com/get"
-import re
-
-import aiohttp
-
-# from google_trans_new import google_translator
-from googletrans import Translator as google_translator
 from pyrogram import filters
+from pyrogram.types import Message
+from aiohttp import ClientSession
+from Python_ARQ import ARQ
 
-from TGRobot import BOT_ID, pbot as Arise
-from TGRobot.helper_extra.aichat import add_chat, get_session, remove_chat
-from TGRobot.pyrogramee.pluginshelper import admins_only, edit_or_reply
+from TGRobot import pgram as app
+from TGRobot.pyrogramee.pluginshelper import edit_or_reply as eor
+from TGRobot.pyrogramee.errors import capture_err
+from TGRobot.utils.filter_groups import chatbot_group
+from TGRobot.arqclient import arq
+from TGRobot import BOT_ID
 
-translator = google_translator()
+__mod_name__ = "ChatBot"
+__help__ = """
+/chatbot [ENABLE|DISABLE] To Enable Or Disable ChatBot In Your Chat.
+"""
+
+active_chats_bot = []
+
+async def chat_bot_toggle(db, message: Message):
+    status = message.text.split(None, 1)[1].lower()
+    chat_id = message.chat.id
+    if status == "enable":
+        if chat_id not in db:
+            db.append(chat_id)
+            text = "Chatbot Enabled!"
+            return await eor(message, text=text)
+        await eor(message, text="ChatBot Is Already Enabled.")
+    elif status == "disable":
+        if chat_id in db:
+            db.remove(chat_id)
+            return await eor(message, text="Chatbot Disabled!")
+        await eor(message, text="ChatBot Is Already Disabled.")
+    else:
+        await eor(
+            message, text="**Usage:**\n/chatbot [ENABLE|DISABLE]"
+        )
+
+
+# Enabled | Disable Chatbot
+
+
+@app.on_message(filters.command("chatbot") & ~filters.edited)
+@capture_err
+async def chatbot_status(_, message: Message):
+    if len(message.command) != 2:
+        return await eor(
+            message, text="**Usage:**\n/chatbot [ENABLE|DISABLE]"
+        )
+    await chat_bot_toggle(active_chats_bot, message)
 
 
 async def lunaQuery(query: str, user_id: int):
@@ -23,344 +57,32 @@ async def lunaQuery(query: str, user_id: int):
     return luna.result
 
 
-def extract_emojis(s):
-    return "".join(c for c in s if c in emoji.UNICODE_EMOJI)
-
-
-async def fetch(url):
-    try:
-        async with aiohttp.Timeout(10.0):
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as resp:
-                    try:
-                        data = await resp.json()
-                    except:
-                        data = await resp.text()
-            return data
-    except:
-        print("AI response Timeout")
-        return
-
-
-Arise_chats = []
-en_chats = []
-# AI Chat (C) 2020-2021 by @InukaAsith
-
-from Python_ARQ import ARQ   
-from aiohttp import ClientSession
-ARQ_API_URL = "https://thearq.tech"
-ARQ_API_KEY = "STXSEH-AVNJXZ-IYJYQZ-OGCAMH-ARQ"
-
-aiohttpsession = ClientSession()
-arq = ARQ(ARQ_API_URL, ARQ_API_KEY, aiohttpsession)
-
-
-@Arise.on_message(
-    filters.command("chatbot") & ~filters.edited & ~filters.bot & ~filters.private
-)
-@admins_only
-async def hmm(_, message):
-    global Arise_chats
-    if len(message.command) != 2:
-        await message.reply_text(
-            "I only recognize `/chatbot on` and /chatbot `off only`"
-        )
-        message.continue_propagation()
-    status = message.text.split(None, 1)[1]
+async def type_and_send(message: Message):
     chat_id = message.chat.id
-    if status == "ON" or status == "on" or status == "On":
-        lel = await edit_or_reply(message, "`Processing...`")
-        lol = add_chat(int(message.chat.id))
-        if not lol:
-            await lel.edit("Cha Hae-In AI Already Activated In This Chat")
-            return
-        await lel.edit(
-            f"Cha Hae-In AI Successfully Added For Users In The Chat {message.chat.id}"
-        )
-
-    elif status == "OFF" or status == "off" or status == "Off":
-        lel = await edit_or_reply(message, "`Processing...`")
-        Escobar = remove_chat(int(message.chat.id))
-        if not Escobar:
-            await lel.edit("Cha Hae-In AI Was Not Activated In This Chat")
-            return
-        await lel.edit(
-            f"Cha Hae-In AI Successfully Deactivated For Users In The Chat {message.chat.id}"
-        )
-
-    elif status == "EN" or status == "en" or status == "english":
-        if not chat_id in en_chats:
-            en_chats.append(chat_id)
-            await message.reply_text("English AI chat Enabled!")
-            return
-        await message.reply_text("AI Chat Is Already Disabled.")
-        message.continue_propagation()
-    else:
-        await message.reply_text(
-            "I only recognize `/chatbot on` and /chatbot `off only`"
-        )
+    user_id = message.from_user.id if message.from_user else 0
+    query = message.text.strip()
+    await message._client.send_chat_action(chat_id, "typing")
+    response, _ = await gather(lunaQuery(query, user_id), sleep(3))
+    await message.reply_text(response)
+    await message._client.send_chat_action(chat_id, "cancel")
 
 
-@Arise.on_message(
+@app.on_message(
     filters.text
     & filters.reply
     & ~filters.bot
-    & ~filters.edited
     & ~filters.via_bot
     & ~filters.forwarded,
-    group=2,
+    group=chatbot_group,
 )
-async def hmm(client, message):
-    if not get_session(int(message.chat.id)):
+@capture_err
+async def chatbot_talk(_, message: Message):
+    if message.chat.id not in active_chats_bot:
         return
     if not message.reply_to_message:
         return
-    try:
-        senderr = message.reply_to_message.from_user.id
-    except:
+    if not message.reply_to_message.from_user:
         return
-    if senderr != BOT_ID:
+    if message.reply_to_message.from_user.id != BOT_ID:
         return
-    msg = message.text
-    chat_id = message.chat.id
-    if msg.startswith("/") or msg.startswith("@"):
-        message.continue_propagation()
-    if chat_id in en_chats:
-        test = msg
-        test = test.replace("Cha Hae-In", "Aco")
-        test = test.replace("Cha Hae-In", "Aco")
-        response = await lunaQuery(
-            test, message.from_user.id if message.from_user else 0
-        )
-        response = response.replace("Aco", "Cha Hae-In")
-        response = response.replace("aco", "Cha Hae-In")
-
-        pro = response
-        try:
-            await Arise.send_chat_action(message.chat.id, "typing")
-            await message.reply_text(pro)
-        except CFError:
-            return
-
-    else:
-        u = msg.split()
-        emj = extract_emojis(msg)
-        msg = msg.replace(emj, "")
-        if (
-            [(k) for k in u if k.startswith("@")]
-            and [(k) for k in u if k.startswith("#")]
-            and [(k) for k in u if k.startswith("/")]
-            and re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []
-        ):
-
-            h = " ".join(filter(lambda x: x[0] != "@", u))
-            km = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", h)
-            tm = km.split()
-            jm = " ".join(filter(lambda x: x[0] != "#", tm))
-            hm = jm.split()
-            rm = " ".join(filter(lambda x: x[0] != "/", hm))
-        elif [(k) for k in u if k.startswith("@")]:
-
-            rm = " ".join(filter(lambda x: x[0] != "@", u))
-        elif [(k) for k in u if k.startswith("#")]:
-            rm = " ".join(filter(lambda x: x[0] != "#", u))
-        elif [(k) for k in u if k.startswith("/")]:
-            rm = " ".join(filter(lambda x: x[0] != "/", u))
-        elif re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []:
-            rm = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", msg)
-        else:
-            rm = msg
-            # print (rm)
-        try:
-            lan = translator.detect(rm)
-            lan = lan.lang
-        except:
-            return
-        test = rm
-        if not "en" in lan and not lan == "":
-            try:
-                test = translator.translate(test, dest="en")
-                test = test.text
-            except:
-                return
-        # test = emoji.demojize(test.strip())
-
-        test = test.replace("Cha Hae-In", "Aco")
-        test = test.replace("Cha Hae-In", "Aco")
-        response = await lunaQuery(
-            test, message.from_user.id if message.from_user else 0
-        )
-        response = response.replace("Aco", "Cha Hae-In")
-        response = response.replace("aco", "Cha Hae-In")
-        response = response.replace("Luna", "Cha Hae-In")
-        response = response.replace("luna", "Cha Hae-In")
-        pro = response
-        if not "en" in lan and not lan == "":
-            try:
-                pro = translator.translate(pro, dest=lan)
-                pro = pro.text
-            except:
-                return
-        try:
-            await Arise.send_chat_action(message.chat.id, "typing")
-            await message.reply_text(pro)
-        except CFError:
-            return
-
-
-@Arise.on_message(
-    filters.text & filters.private & ~filters.edited & filters.reply & ~filters.bot
-)
-async def inuka(client, message):
-    msg = message.text
-    if msg.startswith("/") or msg.startswith("@"):
-        message.continue_propagation()
-    u = msg.split()
-    emj = extract_emojis(msg)
-    msg = msg.replace(emj, "")
-    if (
-        [(k) for k in u if k.startswith("@")]
-        and [(k) for k in u if k.startswith("#")]
-        and [(k) for k in u if k.startswith("/")]
-        and re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []
-    ):
-
-        h = " ".join(filter(lambda x: x[0] != "@", u))
-        km = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", h)
-        tm = km.split()
-        jm = " ".join(filter(lambda x: x[0] != "#", tm))
-        hm = jm.split()
-        rm = " ".join(filter(lambda x: x[0] != "/", hm))
-    elif [(k) for k in u if k.startswith("@")]:
-
-        rm = " ".join(filter(lambda x: x[0] != "@", u))
-    elif [(k) for k in u if k.startswith("#")]:
-        rm = " ".join(filter(lambda x: x[0] != "#", u))
-    elif [(k) for k in u if k.startswith("/")]:
-        rm = " ".join(filter(lambda x: x[0] != "/", u))
-    elif re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []:
-        rm = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", msg)
-    else:
-        rm = msg
-        # print (rm)
-    try:
-        lan = translator.detect(rm)
-        lan = lan.lang
-    except:
-        return
-    test = rm
-    if not "en" in lan and not lan == "":
-        try:
-            test = translator.translate(test, dest="en")
-            test = test.text
-        except:
-            return
-
-    # test = emoji.demojize(test.strip())
-
-    # Kang with the credits bitches @InukaASiTH
-    test = test.replace("Cha Hae-In", "Aco")
-    test = test.replace("Cha Hae-In", "Aco")
-
-    response = await lunaQuery(test, message.from_user.id if message.from_user else 0)
-    response = response.replace("Aco", "Cha Hae-In")
-    response = response.replace("aco", "Cha Hae-In")
-
-    pro = response
-    if not "en" in lan and not lan == "":
-        pro = translator.translate(pro, dest=lan)
-        pro = pro.text
-    try:
-        await Arise.send_chat_action(message.chat.id, "typing")
-        await message.reply_text(pro)
-    except CFError:
-        return
-
-
-@Arise.on_message(
-    filters.regex("cha|chahaein|ChaHae|Cha Hae|Sung|SUNG|Hunter|Cha")
-    & ~filters.bot
-    & ~filters.via_bot
-    & ~filters.forwarded
-    & ~filters.reply
-    & ~filters.channel
-    & ~filters.edited
-)
-async def inuka(client, message):
-    msg = message.text
-    if msg.startswith("/") or msg.startswith("@"):
-        message.continue_propagation()
-    u = msg.split()
-    emj = extract_emojis(msg)
-    msg = msg.replace(emj, "")
-    if (
-        [(k) for k in u if k.startswith("@")]
-        and [(k) for k in u if k.startswith("#")]
-        and [(k) for k in u if k.startswith("/")]
-        and re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []
-    ):
-
-        h = " ".join(filter(lambda x: x[0] != "@", u))
-        km = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", h)
-        tm = km.split()
-        jm = " ".join(filter(lambda x: x[0] != "#", tm))
-        hm = jm.split()
-        rm = " ".join(filter(lambda x: x[0] != "/", hm))
-    elif [(k) for k in u if k.startswith("@")]:
-
-        rm = " ".join(filter(lambda x: x[0] != "@", u))
-    elif [(k) for k in u if k.startswith("#")]:
-        rm = " ".join(filter(lambda x: x[0] != "#", u))
-    elif [(k) for k in u if k.startswith("/")]:
-        rm = " ".join(filter(lambda x: x[0] != "/", u))
-    elif re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []:
-        rm = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", msg)
-    else:
-        rm = msg
-        # print (rm)
-    try:
-        lan = translator.detect(rm)
-        lan = lan.lang
-    except:
-        return
-    test = rm
-    if not "en" in lan and not lan == "":
-        try:
-            test = translator.translate(test, dest="en")
-            test = test.text
-        except:
-            return
-
-    # test = emoji.demojize(test.strip())
-
-    test = test.replace("Cha Hae-In", "Aco")
-    test = test.replace("Cha Hae-In", "Aco")
-    response = await lunaQuery(test, message.from_user.id if message.from_user else 0)
-    response = response.replace("Aco", "Cha Hae-In")
-    response = response.replace("aco", "Cha Hae-In")
-
-    pro = response
-    if not "en" in lan and not lan == "":
-        try:
-            pro = translator.translate(pro, dest=lan)
-            pro = pro.text
-        except Exception:
-            return
-    try:
-        await Arise.send_chat_action(message.chat.id, "typing")
-        await message.reply_text(pro)
-    except CFError:
-        return
-
-
-__help__ = """
-<b> AI Chatbot </b>
-Cha Hae-In AI Chatot
-
- - /chatbot [ON/OFF]: Enables and disables AI Chat mode 
- - /chatbot EN : Enables English only chatbot
- 
-
-"""
-
-__mod_name__ = "Chatbot"
+    await type_and_send(message)
