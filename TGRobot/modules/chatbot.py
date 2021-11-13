@@ -72,10 +72,10 @@ async def hmm(_, message):
         lel = await edit_or_reply(message, "`Processing...`")
         lol = add_chat(int(message.chat.id))
         if not lol:
-            await lel.edit("Cha Hae-In AI Already Activated In This Chat")
+            await lel.edit("Shoyo AI Already Activated In This Chat")
             return
         await lel.edit(
-            f"Cha Hae-In AI Successfully Added For Users In The Chat {message.chat.id}"
+            f"Shoyo AI Successfully Added For Users In The Chat {message.chat.id}"
         )
 
     elif status == "OFF" or status == "off" or status == "Off":
@@ -85,7 +85,7 @@ async def hmm(_, message):
             await lel.edit("Cha Hae-In AI Was Not Activated In This Chat")
             return
         await lel.edit(
-            f"Cha Hae-In AI Successfully Deactivated For Users In The Chat {message.chat.id}"
+            f"CShoyo AI Successfully Deactivated For Users In The Chat {message.chat.id}"
         )
 
     elif status == "EN" or status == "en" or status == "english":
