@@ -1,8 +1,8 @@
 import asyncio
 from telethon import events
 from telethon.tl.types import ChannelParticipantsAdmins
-from AsunaRobot import telethn
-from AsunaRobot.events import register as tg
+from TGRobot import telethn
+from TGRobot.events import register as tg
 
 
 @tg(pattern="^/tagall ?(.*)")
