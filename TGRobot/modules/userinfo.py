@@ -297,23 +297,23 @@ def info(update: Update, context: CallbackContext):
         disaster_level_present = True
     
     elif user.id in DEV_USERS:
-        text += "\n\nThis user is member one of the '❖ 𝐏𝐮𝐛𝐥𝐢𝐜 𝐒𝐚𝐟𝐞𝐭𝐲 𝐃𝐞𝐯𝐢𝐥 𝐇𝐮𝐧𝐭𝐞𝐫𝐬 ❖'."
+        text += "\n\nThis user is member one of the '❖ RETARDS ❖'."
         disaster_level_present = True
     elif user.id in DRAGONS:
-        text += "\n\ndisaster level of is a Sudo User'✧ HIGH PEPS ✧' 𝓣𝓱𝓮 𝓜𝓸𝓻𝓷𝓲𝓷𝓰 𝓢𝓽𝓪𝓻. \n The bringer of light, representing pride and enlightenment, the element of air, the direction of the east, and cand."
+        text += "\n\nDisaster level of this user is a Sudo User'✧ HIGH PEPS ✧' 𝓣𝓱𝓮 𝓜𝓸𝓻𝓷𝓲𝓷𝓰 𝓢𝓽𝓪𝓻. "
         disaster_level_present = True
     elif user.id in DEMONS:
-        text += "\n\nThis person is the Demonic 'Satan' 𝕷𝖔𝖗𝖉 𝖔𝖋 𝖙𝖍𝖊 𝕴𝖓𝖋𝖊𝖗𝖓𝖔. \n The adversary, representing opposition, the element of fire, the direction of the south, and the Sigil of Baphomet during ritual."
+        text += "\n\nDisaster level of this user is a Demon' 𝕷𝖔𝖗𝖉 𝖔𝖋 𝖙𝖍𝖊 𝕴𝖓𝖋𝖊𝖗𝖓𝖔. \n "
         disaster_level_present = True
     elif user.id in TIGERS:
-        text += "\n\nThis perosn is the Devil 'Leviathan' ꜱᴇʀᴘᴇɴᴛ ᴏꜰ ᴛʜᴇ ᴀʙʏꜱꜱ. \n The great dragon, representing primal secrecy, the element of water, the direction of the west, and the chalice during ritual."
+        text += "\n\nDisaster level of this person is a Tiger 'Leviathan' ꜱᴇʀᴘᴇɴᴛ ᴏꜰ ᴛʜᴇ ᴀʙʏꜱꜱ. \n"
         disaster_level_present = True
     elif user.id in WOLVES:
-        text += "\n\nThis is the 𝕄𝕒𝕤𝕥𝕖𝕣𝕝𝕖𝕤𝕤 𝔻𝕖𝕧𝕚𝕝 'Belial'. \n The baseness of the earth, independence and self-sufficiency, the element of earth, the direction of the north, and the sword during ritual."
+        text += "\n\nThis is the 𝕄𝕒𝕤𝕥𝕖𝕣𝕝𝕖𝕤𝕤 𝔻𝕖𝕧𝕚𝕝 'Belial'. \n "
         disaster_level_present = True
         
     if disaster_level_present:
-        text += ' [<a href="https://t.me/AinCradNetwork/18">❖</a>]'.format(
+        text += ' [<a href="https://t.me/https://t.me/shhhilence/18">❖</a>]'.format(
             bot.username
         )
 
