@@ -169,7 +169,7 @@ I have Quite a Few Features, Go Ahead and Check out!"""
 
 ARISE_IMG = "https://i.imgur.com/vQ4ryec.png"
 
-DONATE_STRING = """I am a S-Rank Hunter... There is mo need to donate... All I seek is pawns. Join Us into @AinCradNetwork."""
+DONATE_STRING = """There is mo need to donate... All I seek is pawns. Join Us into @shhhilence."""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -454,8 +454,8 @@ def Arise_about_callback(update, context):
                  \n❍ I have a note keeping system, blacklists, and even predetermined replies on certain keywords.
                  \n❍ I check for admins' permissions before executing any command and more stuffs
                  \n
-                 \nHere is the Contact to my hubby [Sung Jin-Woo](https://t.me/TheSungJinWoo).
-                 \n\nIf you have any question about Mᴀᴋɪᴍᴀ Sᴀɴsᴜᴋɪ, let us know at @AnimeFunChat.""",
+                 \nHere is the Contact to my hubby [◥ᎪNᏦush™◤ ](https://t.me/INTERVIER_RRRR).
+                 \n\nIf you have any question about Hinata ◥ᎪNᏦush™◤ , let us know at @HINATA_ROBOT_SUPPORT.""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
