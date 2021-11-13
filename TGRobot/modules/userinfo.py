@@ -245,7 +245,7 @@ def info(update: Update, context: CallbackContext):
     rep = message.reply_text("<code>Ara Ara User-kun...</code>", parse_mode=ParseMode.HTML)
 
     text = (
-        f"╒═══❖<b> The Satanic Bible:</b>❖\n"
+        f"╒═══❖<b> INFORMATION:</b>❖\n"
         f"┣|• ID: <code>{user.id}</code>\n"
         f"┣|• First Name: {html.escape(user.first_name)}"
     )
@@ -293,11 +293,11 @@ def info(update: Update, context: CallbackContext):
     disaster_level_present = False
 
     if user.id == OWNER_ID:
-        text += f"\n\n disaster level of{html.escape(user.first_name)} is an '❖Owner❖'. "
+        text += f"\n\n Disaster level of{html.escape(user.first_name)} is an '❖Owner❖'. "
         disaster_level_present = True
     
     elif user.id in DEV_USERS:
-        text += "\n\nThis user is member one of the '❖ RETARDS ❖'."
+        text += "\n\nThis user is one of the member '❖ RETARDS ❖'."
         disaster_level_present = True
     elif user.id in DRAGONS:
         text += "\n\nDisaster level of this user is a Sudo User'✧ HIGH PEPS ✧' 𝓣𝓱𝓮 𝓜𝓸𝓻𝓷𝓲𝓷𝓰 𝓢𝓽𝓪𝓻. "
