@@ -1,0 +1,8 @@
+{
+    "SUPERUSERS": [],
+    "GBEG": [],
+    "FREE": [],
+    "BEGGERS": [],
+    "NOOBS": [],
+    "PRO": []
+}
