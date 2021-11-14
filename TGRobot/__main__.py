@@ -110,11 +110,11 @@ buttons = [
 
         InlineKeyboardButton(
 
-          text="📮 Updates", url="https://t.me/CLIPPED_CROW"
+          text="Updates", url="https://t.me/CLIPPED_CROW"
 
         ),InlineKeyboardButton(
 
-           text="🐱 Support", url=f"https://t.me/{SUPPORT_CHAT}"
+           text="Support", url=f"https://t.me/{SUPPORT_CHAT}"
 
          ),
 
