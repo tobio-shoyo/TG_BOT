@@ -7,6 +7,8 @@ from pyrogram.types import (
     Message,
 )
 
+from TGRobot import BOT_NAME
+
 # By @TroJanzHEX
 from TGRobot.utils.resources.ImageEditor.edit_1 import (  # pylint:disable=import-error
     black_white,
@@ -16,7 +18,34 @@ from TGRobot.utils.resources.ImageEditor.edit_1 import (  # pylint:disable=impor
     mix,
     normal_blur,
 )
-
+from TGRobot.utils.resources.ImageEditor.edit_3 import (  # pylint:disable=import-error
+    black_border,
+    blue_border,
+    green_border,
+    red_border,
+)
+from TGRobot.utils.resources.ImageEditor.edit_4 import (  # pylint:disable=import-error
+    inverted,
+    removebg_plain,
+    removebg_sticker,
+    removebg_white,
+    rotate_90,
+    rotate_180,
+    rotate_270,
+    round_sticker,
+)
+from TG.utils.resources.ImageEditor.edit_5 import (  # pylint:disable=import-error
+    normalglitch_1,
+    normalglitch_2,
+    normalglitch_3,
+    normalglitch_4,
+    normalglitch_5,
+    scanlineglitch_1,
+    scanlineglitch_2,
+    scanlineglitch_3,
+    scanlineglitch_4,
+    scanlineglitch_5,
+)
 from TGRobot import pgram
 
 lel = 00000000
@@ -51,16 +80,10 @@ async def photo(client: pgram, message: Message):
                         InlineKeyboardButton(text="🌌 BORDER", callback_data="border"),
                     ],
                     [
-                        InlineKeyboardButton(text="🎉 STICKER", callback_data="stick"),
                         InlineKeyboardButton(text="↩️ ROTATE", callback_data="rotate"),
-                        InlineKeyboardButton(
-                            text="🔦 CONTRAST", callback_data="contrast"
-                        ),
                     ],
                     [
                         InlineKeyboardButton(text="🌇 SEPIA", callback_data="sepia"),
-                        InlineKeyboardButton(text="✏️ PENCIL", callback_data="pencil"),
-                        InlineKeyboardButton(text="🐶 CARTOON", callback_data="cartoon"),
                     ],
                     [
                         InlineKeyboardButton(text="🔄 INVERT", callback_data="inverted"),
@@ -104,9 +127,7 @@ async def cb_handler(client: pgram, query: CallbackQuery):
                             ),
                         ],
                         [
-                            InlineKeyboardButton(
-                                text="STICKER", callback_data="rmbgsticker"
-                            )
+                            
                         ],
                     ]
                 ),
@@ -279,14 +300,6 @@ async def cb_handler(client: pgram, query: CallbackQuery):
             await query.message.delete()
             await black_white(client, query.message)
 
-        elif query.data == "circlewithbg":
-            await query.message.delete()
-            await circle_with_bg(client, query.message)
-
-        elif query.data == "circlewithoutbg":
-            await query.message.delete()
-            await circle_without_bg(client, query.message)
-
         elif query.data == "green":
             await query.message.delete()
             await green_border(client, query.message)
@@ -303,6 +316,7 @@ async def cb_handler(client: pgram, query: CallbackQuery):
             await query.message.delete()
             await black_border(client, query.message)
 
+            
         elif query.data == "circle_sticker":
             await query.message.delete()
             await round_sticker(client, query.message)
@@ -310,14 +324,6 @@ async def cb_handler(client: pgram, query: CallbackQuery):
         elif query.data == "inverted":
             await query.message.delete()
             await inverted(client, query.message)
-
-        elif query.data == "stkr":
-            await query.message.delete()
-            await sticker(client, query.message)
-
-        elif query.data == "cur_ved":
-            await query.message.delete()
-            await edge_curved(client, query.message)
 
         elif query.data == "90":
             await query.message.delete()
@@ -331,10 +337,6 @@ async def cb_handler(client: pgram, query: CallbackQuery):
             await query.message.delete()
             await rotate_270(client, query.message)
 
-        elif query.data == "contrast":
-            await query.message.delete()
-            await contrast(client, query.message)
-
         elif query.data == "box":
             await query.message.delete()
             await box_blur(client, query.message)
@@ -347,17 +349,6 @@ async def cb_handler(client: pgram, query: CallbackQuery):
             await query.message.delete()
             await normal_blur(client, query.message)
 
-        elif query.data == "sepia":
-            await query.message.delete()
-            await sepia_mode(client, query.message)
-
-        elif query.data == "pencil":
-            await query.message.delete()
-            await pencil(client, query.message)
-
-        elif query.data == "cartoon":
-            await query.message.delete()
-            await cartoon(client, query.message)
 
         elif query.data == "normalglitch1":
             await query.message.delete()
@@ -412,7 +403,7 @@ async def cb_handler(client: pgram, query: CallbackQuery):
 
 __mod_name__ = "Image Editor"
 __help__ = f"""
-Hinata Shôyô have some advanced image editing tools inbuilt
+{BOT_NAME} have some advanced image editing tools inbuilt
 Bright, Circle, RemBG, Blur, Border, Flip, Glitch, Sticker maker and more
   ➢ `/edit [reply to image]`*:* Open the image editor
   ➢ `/rmbg [REPLY]`*:* Revove BG of replied image/sticker.
