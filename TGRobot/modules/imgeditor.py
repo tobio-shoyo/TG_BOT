@@ -7,7 +7,7 @@ from pyrogram.types import (
     Message,
 )
 
-from Cutiepii_Robot import BOT_NAME
+from TGRobot import BOT_NAME
 
 # By @TroJanzHEX
 from TGRobot.utils.resources.ImageEditor.edit_1 import (  # pylint:disable=import-error
