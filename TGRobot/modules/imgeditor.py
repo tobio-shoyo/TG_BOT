@@ -106,7 +106,6 @@ async def photo(client: pgram, message: Message):
         except Exception:
             return
 
-
 @pgram.on_callback_query()
 async def cb_handler(client: pgram, query: CallbackQuery):
     user_id = query.from_user.id
