@@ -16,44 +16,7 @@ from TGRobot.utils.resources.ImageEditor.edit_1 import (  # pylint:disable=impor
     mix,
     normal_blur,
 )
-from TGRobot.utils.resources.ImageEditor.edit_2 import (  # pylint:disable=import-error
-    cartoon,
-    circle_with_bg,
-    circle_without_bg,
-    contrast,
-    edge_curved,
-    pencil,
-    sepia_mode,
-    sticker,
-)
-from TGRobot.utils.resources.ImageEditor.edit_3 import (  # pylint:disable=import-error
-    black_border,
-    blue_border,
-    green_border,
-    red_border,
-)
-from TGRobot.utils.resources.ImageEditor.edit_4 import (  # pylint:disable=import-error
-    inverted,
-    removebg_plain,
-    removebg_sticker,
-    removebg_white,
-    rotate_90,
-    rotate_180,
-    rotate_270,
-    round_sticker,
-)
-from TGRobot.utils.resources.ImageEditor.edit_5 import (  # pylint:disable=import-error
-    normalglitch_1,
-    normalglitch_2,
-    normalglitch_3,
-    normalglitch_4,
-    normalglitch_5,
-    scanlineglitch_1,
-    scanlineglitch_2,
-    scanlineglitch_3,
-    scanlineglitch_4,
-    scanlineglitch_5,
-)
+
 from TGRobot import pgram
 
 lel = 00000000
