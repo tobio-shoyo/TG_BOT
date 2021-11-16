@@ -98,8 +98,7 @@ if ENV:
     SUPPORT_CHAT = os.environ.get("SUPPORT_CHAT", None)
     SPAMWATCH_SUPPORT_CHAT = os.environ.get("SPAMWATCH_SUPPORT_CHAT", None)
     SPAMWATCH_API = os.environ.get("SPAMWATCH_API", None)
-    REM_BG_API_KEY = Config.REM_BG_API_KEY
-
+    REM_BG_API_KEY = os.environ.get("REM_BG_API_KEY", None) # From:- https://www.remove.bg/
     ALLOW_CHATS = os.environ.get("ALLOW_CHATS", True)
     BOT_USERNAME = os.environ.get("BOT_USERNAME", "MakimaSuperbot")
     STRING_SESSION = os.environ.get("STRING_SESSION", None)
@@ -178,10 +177,10 @@ else:
     TIME_API_KEY = Config.TIME_API_KEY
     AI_API_KEY = Config.AI_API_KEY
     WALL_API = Config.WALL_API
-    REM_BG_API_KEY = os.environ.get("REM_BG_API_KEY", None) # From:- https://www.remove.bg/
     SUPPORT_CHAT = Config.SUPPORT_CHAT
     SPAMWATCH_SUPPORT_CHAT = Config.SPAMWATCH_SUPPORT_CHAT
     SPAMWATCH_API = Config.SPAMWATCH_API
+    REM_BG_API_KEY = Config.REM_BG_API_KEY
     INFOPIC = Config.INFOPIC
     REDIS_URL = Config.REDIS_URL
     BOT_USERNAME = Config.BOT_USERNAME
