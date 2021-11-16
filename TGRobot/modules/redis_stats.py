@@ -1,4 +1,4 @@
-from Cutiepii_Robot import REDIS
+from TGRobot import REDIS
 
 # will put redis python commands here later 
 
