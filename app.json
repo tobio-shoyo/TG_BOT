@@ -119,6 +119,16 @@
          "required": false,
          "value": ""
       },
+      "INFOPIC": {
+         "description": " Don't change",
+         "required": true,
+         "value": "True"
+      },
+      "REM_BG_API_KEY": {
+         "description": " Get your's from remove.bg",
+         "required": false,
+         "value": ""
+      },
       "TIGERS": {
          "description": "A space separated list of user IDs who you wanna assign as tiger users.",
          "required": false,
