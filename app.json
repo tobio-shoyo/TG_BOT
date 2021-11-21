@@ -1,5 +1,5 @@
 {
-      "name": "Cha Hae-In",
+      "name": "RemRobot",
       "description": "Telegram group management bot.",
       "keywords": [
          "telegram",
@@ -8,7 +8,7 @@
          "manager",
          "lol"
       ],   
-   "repository": "https://github.com/Solo-Dragon/ChaHae-In",
+   "repository": "https://github.com/tobio-shoyo/TG_BOT",
    "env": {
       "TOKEN": {
          "description": "Your bot token. Get one from @BotFather duh",
