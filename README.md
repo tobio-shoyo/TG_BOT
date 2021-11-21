@@ -1,4 +1,4 @@
-# Cha Hae-In
+#Rem
 ![Cha](https://telegra.ph//file/257059bc7f419a24a021d.jpg)
 A modular telegram Python bot running on python3 with an sqlalchemy, Redis, mongodb database.
 
@@ -13,7 +13,7 @@ A modular telegram Python bot running on python3 with an sqlalchemy, Redis, mong
 + [x] Heroku Deploy
 + [x] Docker/Local Machine
 
-Can be found on telegram as [Cha Hae-In](https://t.me/ChaHaeInbot).
+Can be found on telegram as [Rem](https://t.me/RemCutebot).
 
 ## Credits
 The bot is based of on the original work done by [PaulSonOfLars](https://github.com/PaulSonOfLars)
@@ -57,7 +57,7 @@ The Easiest Way to Deploy This Bot is Via Heroku.
 </p>
 
 ```console
-    ~$ git clone https://github.com/Solo-Dragon/ChaHae-In
+    ~$ git clone https://github.com/tobio-shoyo/TG_BOT
     ~$ cd TGRobot
     ~$ cp sample_config.py config.py
 ```
